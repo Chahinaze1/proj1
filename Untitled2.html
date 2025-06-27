@@ -1,0 +1,267 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Untitled2</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2025-05-24"><meta name="DC.source" content="Untitled2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">=== 1. Load Audio ===</a></li><li><a href="#3">=== 2. Define DES Key ===</a></li><li><a href="#4">=== 3. Encrypt Audio Data with DES ===</a></li><li><a href="#5">=== 4. Save Encrypted Audio ===</a></li><li><a href="#6">=== Function: Generate DES Subkeys ===</a></li><li><a href="#8">=== Function: DES Block Encryption (Single Round Feistel) ===</a></li><li><a href="#10">=== Function: Simplified DES f-function ===</a></li></ul></div><pre class="codeinput"><span class="comment">% DES Audio Encryption in MATLAB</span>
+<span class="comment">% Complete script: key generation + encryption + audio processing</span>
+
+clc;
+clear;
+</pre><pre class="codeoutput error">Error using dbstatus
+Error: File: C:\Users\ELITE COMPUTER\OneDrive\Untitled2.m Line: 41 Column: 1
+Function definitions are not permitted in this context.
+</pre><h2>=== 1. Load Audio ===<a name="2"></a></h2><pre class="codeinput">[audio, Fs] = audioread(<span class="string">'C:\Users\ELITE COMPUTER\Downloads\sample'</span>);
+audio = audio(:,1);  <span class="comment">% Mono only</span>
+
+<span class="comment">% Resample for easier processing (optional)</span>
+audio = resample(audio, 8000, Fs);
+Fs = 8000;
+
+<span class="comment">% Convert to int16 for byte processing</span>
+audio_int16 = int16(audio * 32767);
+audio_bytes = typecast(audio_int16, <span class="string">'uint8'</span>);
+</pre><h2>=== 2. Define DES Key ===<a name="3"></a></h2><pre class="codeinput">hex_key = <span class="string">'133457799BBCDFF1'</span>; <span class="comment">% 64-bit key in hex</span>
+key_bytes = uint8(sscanf(hex_key, <span class="string">'%2x'</span>).');
+subkeys = generate_des_subkeys(key_bytes);  <span class="comment">% 16 subkeys</span>
+</pre><h2>=== 3. Encrypt Audio Data with DES ===<a name="4"></a></h2><pre class="codeinput">cipher = [];
+<span class="keyword">for</span> i = 1:8:length(audio_bytes)
+    block = audio_bytes(i:min(i+7, end));
+    <span class="keyword">if</span> length(block) &lt; 8
+        block(end+1:8) = 0; <span class="comment">% Padding</span>
+    <span class="keyword">end</span>
+    encrypted = des_encrypt_block(block, subkeys);
+    cipher = [cipher, encrypted];
+<span class="keyword">end</span>
+</pre><h2>=== 4. Save Encrypted Audio ===<a name="5"></a></h2><pre class="codeinput">cipher_int16 = typecast(uint8(cipher), <span class="string">'int16'</span>);
+audiowrite(<span class="string">'audio_chiffre_des.wav'</span>, double(cipher_int16)/32767, Fs);
+disp(<span class="string">'Encryption complete. Saved to audio_chiffre_des.wav'</span>);
+</pre><h2>=== Function: Generate DES Subkeys ===<a name="6"></a></h2><pre class="codeinput"><span class="keyword">function</span> subkeys = generate_des_subkeys(key64)
+    pc1 = [<span class="keyword">...</span>
+        57 49 41 33 25 17 9 1 58 50 42 34 26 18 <span class="keyword">...</span>
+        10 2 59 51 43 35 27 19 11 3 60 52 44 36 <span class="keyword">...</span>
+        63 55 47 39 31 23 15 7 62 54 46 38 30 22 <span class="keyword">...</span>
+        14 6 61 53 45 37 29 21 13 5 28 20 12 4];
+    pc2 = [<span class="keyword">...</span>
+        14 17 11 24 1 5 3 28 15 6 21 10 23 19 12 4 <span class="keyword">...</span>
+        26 8 16 7 27 20 13 2 41 52 31 37 47 55 30 40 <span class="keyword">...</span>
+        51 45 33 48 44 49 39 56 34 53 46 42 50 36 29 32];
+    shifts = [1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 1];
+
+    key_bits = de2bi(key64, 8, <span class="string">'left-msb'</span>);
+    key_bits = reshape(key_bits', 1, []);
+    key56 = key_bits(pc1);
+
+    C = key56(1:28);
+    D = key56(29:end);
+    subkeys = zeros(16, 48);
+
+    <span class="keyword">for</span> i = 1:16
+        C = circshift(C, [0 -shifts(i)]);
+        D = circshift(D, [0 -shifts(i)]);
+        CD = [C D];
+        subkeys(i,:) = CD(pc2);
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>=== Function: DES Block Encryption (Single Round Feistel) ===<a name="8"></a></h2><pre class="codeinput"><span class="keyword">function</span> encrypted = des_encrypt_block(block, subkeys)
+    <span class="comment">% Initial Permutation table (simplified for test)</span>
+    IP = reshape(1:64, 8, 8)'; IP = IP(:)';
+    block_bits = de2bi(block, 8, <span class="string">'left-msb'</span>);
+    block_bits = reshape(block_bits', 1, []);
+    permuted = block_bits(IP);
+
+    L = permuted(1:32);
+    R = permuted(33:64);
+
+    <span class="keyword">for</span> i = 1:16
+        new_L = R;
+        new_R = bitxor(L, des_f_function(R, subkeys(i,:)));
+        L = new_L;
+        R = new_R;
+    <span class="keyword">end</span>
+
+    final_block = [R L];
+    IP_inv = reshape(1:64, 8, 8)'; IP_inv = IP_inv(:)';
+    final_permuted = final_block(IP_inv);
+
+    final_bytes = reshape(final_permuted, 8, 8)';
+    encrypted = bi2de(final_bytes, <span class="string">'left-msb'</span>);
+    encrypted = uint8(encrypted);
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>=== Function: Simplified DES f-function ===<a name="10"></a></h2><pre class="codeinput"><span class="keyword">function</span> out = des_f_function(R, subkey)
+    <span class="comment">% Expansion (dummy example): replicate bits to 48</span>
+    E = [R R(1:16)];  <span class="comment">% Expand to 48 (NOT true E table)</span>
+    out = bitxor(E, subkey);
+    <span class="comment">% Simplified S-box and permutation: use XOR for simplicity</span>
+    out = out(1:32);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% DES Audio Encryption in MATLAB
+% Complete script: key generation + encryption + audio processing
+
+clc;
+clear;
+
+%% === 1. Load Audio ===
+[audio, Fs] = audioread('C:\Users\ELITE COMPUTER\Downloads\sample');
+audio = audio(:,1);  % Mono only
+
+% Resample for easier processing (optional)
+audio = resample(audio, 8000, Fs);
+Fs = 8000;
+
+% Convert to int16 for byte processing
+audio_int16 = int16(audio * 32767);
+audio_bytes = typecast(audio_int16, 'uint8');
+
+%% === 2. Define DES Key ===
+hex_key = '133457799BBCDFF1'; % 64-bit key in hex
+key_bytes = uint8(sscanf(hex_key, '%2x').');
+subkeys = generate_des_subkeys(key_bytes);  % 16 subkeys
+
+%% === 3. Encrypt Audio Data with DES ===
+cipher = [];
+for i = 1:8:length(audio_bytes)
+    block = audio_bytes(i:min(i+7, end));
+    if length(block) < 8
+        block(end+1:8) = 0; % Padding
+    end
+    encrypted = des_encrypt_block(block, subkeys);
+    cipher = [cipher, encrypted];
+end
+
+%% === 4. Save Encrypted Audio ===
+cipher_int16 = typecast(uint8(cipher), 'int16');
+audiowrite('audio_chiffre_des.wav', double(cipher_int16)/32767, Fs);
+disp('Encryption complete. Saved to audio_chiffre_des.wav');
+
+%% === Function: Generate DES Subkeys ===
+function subkeys = generate_des_subkeys(key64)
+    pc1 = [...
+        57 49 41 33 25 17 9 1 58 50 42 34 26 18 ...
+        10 2 59 51 43 35 27 19 11 3 60 52 44 36 ...
+        63 55 47 39 31 23 15 7 62 54 46 38 30 22 ...
+        14 6 61 53 45 37 29 21 13 5 28 20 12 4];
+    pc2 = [...
+        14 17 11 24 1 5 3 28 15 6 21 10 23 19 12 4 ...
+        26 8 16 7 27 20 13 2 41 52 31 37 47 55 30 40 ...
+        51 45 33 48 44 49 39 56 34 53 46 42 50 36 29 32];
+    shifts = [1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 1];
+
+    key_bits = de2bi(key64, 8, 'left-msb');
+    key_bits = reshape(key_bits', 1, []);
+    key56 = key_bits(pc1);
+
+    C = key56(1:28);
+    D = key56(29:end);
+    subkeys = zeros(16, 48);
+
+    for i = 1:16
+        C = circshift(C, [0 -shifts(i)]);
+        D = circshift(D, [0 -shifts(i)]);
+        CD = [C D];
+        subkeys(i,:) = CD(pc2);
+    end
+end
+
+%% === Function: DES Block Encryption (Single Round Feistel) ===
+function encrypted = des_encrypt_block(block, subkeys)
+    % Initial Permutation table (simplified for test)
+    IP = reshape(1:64, 8, 8)'; IP = IP(:)';
+    block_bits = de2bi(block, 8, 'left-msb');
+    block_bits = reshape(block_bits', 1, []);
+    permuted = block_bits(IP);
+
+    L = permuted(1:32);
+    R = permuted(33:64);
+
+    for i = 1:16
+        new_L = R;
+        new_R = bitxor(L, des_f_function(R, subkeys(i,:)));
+        L = new_L;
+        R = new_R;
+    end
+
+    final_block = [R L];
+    IP_inv = reshape(1:64, 8, 8)'; IP_inv = IP_inv(:)';
+    final_permuted = final_block(IP_inv);
+
+    final_bytes = reshape(final_permuted, 8, 8)';
+    encrypted = bi2de(final_bytes, 'left-msb');
+    encrypted = uint8(encrypted);
+end
+
+%% === Function: Simplified DES f-function ===
+function out = des_f_function(R, subkey)
+    % Expansion (dummy example): replicate bits to 48
+    E = [R R(1:16)];  % Expand to 48 (NOT true E table)
+    out = bitxor(E, subkey);
+    % Simplified S-box and permutation: use XOR for simplicity
+    out = out(1:32);
+end
+
+##### SOURCE END #####
+--></body></html>
